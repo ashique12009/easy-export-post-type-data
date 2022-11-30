@@ -22,6 +22,8 @@
  */
 class Easy_Export_Post_Type_Data_Admin {
 
+	use Helper_Trait;
+
 	/**
 	 * The ID of this plugin.
 	 *
@@ -73,7 +75,7 @@ class Easy_Export_Post_Type_Data_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/easy-export-post-type-data-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, EASY_EXPORT_POST_TYPE_DATA_URL . 'admin/css/easy-export-post-type-data-admin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -96,8 +98,34 @@ class Easy_Export_Post_Type_Data_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/easy-export-post-type-data-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, EASY_EXPORT_POST_TYPE_DATA_URL . 'admin/js/easy-export-post-type-data-admin.js', array( 'jquery' ), $this->version, false );
 
+		wp_localize_script( $this->plugin_name, 'myAjax', [ 'ajaxurl' => admin_url('admin-ajax.php') ] );
+	}
+
+	/**
+	 * Register admin settings menu
+	 */
+	public function eeptd_admin_settings_option_menu() {
+		add_submenu_page(
+			'tools.php',       	// parent slug
+			'Easy Export',    	// page title
+			'Easy Export',     // menu title
+			'manage_options',  // capability
+			'easy-export',    // slug
+			[$this, 'eeptd_easy_export_settings_page'], // callback
+			1
+		);
+	}
+
+	/**
+	 * Menu page
+	 */
+	public function eeptd_easy_export_settings_page() {
+		$view = sanitize_text_field( $_GET['view'] );
+		$view = isset( $view ) ? $view : '';
+		if ($view == '')
+			include 'partials/easy-export-post-type-data-admin-display.php';
 	}
 
 }

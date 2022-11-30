@@ -103,24 +103,34 @@ class Easy_Export_Post_Type_Data {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-easy-export-post-type-data-loader.php';
+		require_once EASY_EXPORT_POST_TYPE_DATA_DIR . 'includes/class-easy-export-post-type-data-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-easy-export-post-type-data-i18n.php';
+		require_once EASY_EXPORT_POST_TYPE_DATA_DIR . 'includes/class-easy-export-post-type-data-i18n.php';
+
+		/**
+		 * Load helper trait
+		 */
+		require_once EASY_EXPORT_POST_TYPE_DATA_DIR . 'admin/trait-helper-methods.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-easy-export-post-type-data-admin.php';
+		require_once EASY_EXPORT_POST_TYPE_DATA_DIR . 'admin/class-easy-export-post-type-data-admin.php';
+		
+		/**
+		 * The class responsible for handling ajax request in the admin area.
+		 */
+		require_once EASY_EXPORT_POST_TYPE_DATA_DIR . 'admin/class-easy-export-post-type-data-admin-ajax.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-easy-export-post-type-data-public.php';
+		require_once EASY_EXPORT_POST_TYPE_DATA_DIR . 'public/class-easy-export-post-type-data-public.php';
 
 		$this->loader = new Easy_Export_Post_Type_Data_Loader();
 
@@ -153,10 +163,13 @@ class Easy_Export_Post_Type_Data {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Easy_Export_Post_Type_Data_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin_ajax = new Easy_Export_Post_Type_Data_Admin_Ajax( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'eeptd_admin_settings_option_menu');
+		$this->loader->add_action( 'wp_ajax_easy_export_action', $plugin_admin_ajax, 'eeptd_start_export');
 	}
 
 	/**

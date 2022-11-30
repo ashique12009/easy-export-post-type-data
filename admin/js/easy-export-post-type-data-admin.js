@@ -29,4 +29,30 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
+	$(document).ready(function() {
+		$('#export-submit-btn').click(function() {
+			// e.preventDefault();
+			let action = $(this).attr("data-action");
+			let nonce = $(this).attr("data-nonce");
+			let post_type = $("#post-type-setting").val();
+
+			$.ajax({
+				type: "post",
+				dataType: "json",
+				url: myAjax.ajaxurl,
+				data: {action: action, post_type: post_type, nonce: nonce},
+				success: function(response) {
+					console.log('res', response);
+					if(response.type == "success") {
+						//$("#vote_counter").html(response.vote_count);
+						console.log('res', response);
+					}
+					else {
+						alert("Your vote could not be added")
+					}
+				}
+			});
+		});
+	});
+
 })( jQuery );

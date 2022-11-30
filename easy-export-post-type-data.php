@@ -36,13 +36,16 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 define( 'EASY_EXPORT_POST_TYPE_DATA_VERSION', '1.0.0' );
+define( 'EASY_EXPORT_POST_TYPE_DATA_DIR', plugin_dir_path( __FILE__ ) );
+define( 'EASY_EXPORT_POST_TYPE_DATA_URL', plugin_dir_url( __FILE__ ) );
+define( 'EASY_EXPORT_POST_TYPE_DATA_TEXT_DOMAIN', 'easy-export-post-type-data' );
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-easy-export-post-type-data-activator.php
  */
 function activate_easy_export_post_type_data() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-easy-export-post-type-data-activator.php';
+	require_once EASY_EXPORT_POST_TYPE_DATA_DIR . 'includes/class-easy-export-post-type-data-activator.php';
 	Easy_Export_Post_Type_Data_Activator::activate();
 }
 
@@ -51,7 +54,7 @@ function activate_easy_export_post_type_data() {
  * This action is documented in includes/class-easy-export-post-type-data-deactivator.php
  */
 function deactivate_easy_export_post_type_data() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-easy-export-post-type-data-deactivator.php';
+	require_once EASY_EXPORT_POST_TYPE_DATA_DIR . 'includes/class-easy-export-post-type-data-deactivator.php';
 	Easy_Export_Post_Type_Data_Deactivator::deactivate();
 }
 
